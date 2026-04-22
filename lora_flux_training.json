@@ -1,0 +1,45 @@
+{
+  "id": "flux-lora-training-alisa-2026",
+  "last_node_id": 87,
+  "last_link_id": 124,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadFluxModel",
+      "pos": [100, 100],
+      "size": [300, 150],
+      "widgets_values": ["flux1-dev-fp8.safetensors", "fp8_e4m3fn", true]
+    },
+    {
+      "id": 2,
+      "type": "FluxTrainer",
+      "pos": [450, 100],
+      "size": [600, 800],
+      "inputs": [
+        { "name": "model", "link": 1 },
+        { "name": "dataset_folder", "widget": { "name": "dataset_folder" } },
+        { "name": "reg_folder", "widget": { "name": "reg_folder" } }
+      ],
+      "widgets_values": [
+        "C:\\ComfyUI\\custom_nodes\\ComfyUI-FluxTrainer\\dataset\\alisa_kuznetsova",
+        "C:\\ComfyUI\\custom_nodes\\ComfyUI-FluxTrainer\\dataset\\regularization",
+        48, 24, 2500, 4, 0.0001, "cosine", "adamw8bit", "bf16", true, "alisa kuznetsova", 777, 0.9, 1024, 1536
+      ]
+    },
+    {
+      "id": 3,
+      "type": "SaveLoRA",
+      "pos": [1100, 300],
+      "size": [300, 100],
+      "inputs": [{ "name": "lora", "link": 2 }]
+    }
+  ],
+  "links": [
+    [1, 1, 0, 2, 0, "FLUXMODEL"],
+    [2, 2, 0, 3, 0, "LORA"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}
