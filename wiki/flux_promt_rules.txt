@@ -1,0 +1,24 @@
+1 Subject first. What is the image of? Start here, every time.
+2 Then action or pose. What is the subject doing?
+3 Then the environment. Where is this happening?
+4 Then lighting. How is the scene lit?
+5 Then style and technical specs. What camera, what look, and what mood?
+
+not negative
+
+40-50 words is the sweet spot for most use cases.
+
+-Texts:
+Always use quotation marks around the exact text you want. Example: A chalkboard sign that says "TODAY'S SPECIAL: LAVENDER LATTE"
+ALL CAPS in the prompt produces ALL CAPS in the image. If you write "HELLO" in the prompt, you'll get "HELLO" in the output. If you write "hello" you'll get "hello."
+
+-Camera:
+For professional portraits: Canon EOS R5, 85mm f/1.4, studio lighting
+For street photography: Fujifilm X-T5, 23mm f/2, available light
+For product shots: Phase One IQ4, 120mm macro, softbox lighting
+For casual content: iPhone 16, natural light, candid angle
+
+-References:
+@image1 wearing the outfit from @image2
+Combine the style of @image1 with the composition of @image3
+The person from image 1 standing in the setting from image 2
