@@ -1,0 +1,759 @@
+{
+ "id": "dbd1d6d7-d572-4b34-95bb-087bcf3063d1",
+ "revision": 0,
+ "last_node_id": 15,
+ "last_link_id": 17,
+ "nodes": [
+  {
+   "id": 1,
+   "type": "MarkdownNote",
+   "title": "👑 Wan 2.2 I2V — финальный рендер (A100)",
+   "pos": [
+    -1180,
+    -160
+   ],
+   "size": [
+    460,
+    280
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [],
+   "properties": {},
+   "widgets_values": [
+    "# 👑 Wan 2.2 I2V — ФИНАЛЬНЫЙ РЕНДЕР (A100 80GB)\n\nОживляет фото Розы с максимальным качеством.\n\n**Как пользоваться:**\n1. «Фото Розы» — выбери эталонное фото\n2. «Animation Prompt» — опиши сцену и движение\n3. Запусти на сервере (A100)\n\n**Разрешение:** 720×1280 (Reels 9:16)\n**Шаги:** 30 (высокое качество)\n**CFG:** 6.0\n\n💡 После рендера → апскейль флоу 16 (до 1080p).\n💡 Lightning LoRA отключена (нам нужно качество, не скорость)."
+   ],
+   "color": "#432",
+   "bgcolor": "#653"
+  },
+  {
+   "id": 2,
+   "type": "CLIPLoader",
+   "title": "1. CLIP (UMT5)",
+   "pos": [
+    -1180,
+    200
+   ],
+   "size": [
+    360,
+    80
+   ],
+   "flags": {},
+   "order": 1,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "CLIP",
+     "type": "CLIP",
+     "links": [
+      1,
+      2
+     ]
+    }
+   ],
+   "properties": {},
+   "widgets_values": [
+    "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+    "wan"
+   ],
+   "color": "#233",
+   "bgcolor": "#355"
+  },
+  {
+   "id": 3,
+   "type": "VAELoader",
+   "title": "2. VAE",
+   "pos": [
+    -1180,
+    310
+   ],
+   "size": [
+    360,
+    70
+   ],
+   "flags": {},
+   "order": 6,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "VAE",
+     "type": "VAE",
+     "links": [
+      8,
+      16
+     ]
+    }
+   ],
+   "properties": {},
+   "widgets_values": [
+    "wan_2.1_vae.safetensors"
+   ],
+   "color": "#233",
+   "bgcolor": "#355"
+  },
+  {
+   "id": 4,
+   "type": "UNETLoader",
+   "title": "3. UNet Loader (Wan 2.2 I2V)",
+   "pos": [
+    -1180,
+    410
+   ],
+   "size": [
+    420,
+    90
+   ],
+   "flags": {},
+   "order": 8,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      3
+     ]
+    }
+   ],
+   "properties": {},
+   "widgets_values": [
+    "wan2_2-i2v-a14b-high_bf16.safetensors",
+    "default"
+   ],
+   "color": "#223",
+   "bgcolor": "#335"
+  },
+  {
+   "id": 5,
+   "type": "CLIPTextEncode",
+   "title": "4. Animation Prompt",
+   "pos": [
+    -760,
+    200
+   ],
+   "size": [
+    440,
+    150
+   ],
+   "flags": {},
+   "order": 2,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "clip",
+     "type": "CLIP",
+     "link": 1
+    }
+   ],
+   "outputs": [
+    {
+     "name": "CONDITIONING",
+     "type": "CONDITIONING",
+     "links": [
+      6
+     ]
+    }
+   ],
+   "properties": {},
+   "widgets_values": [
+    "eyezm321, A young woman in a bikini relaxing on a beach lounger by the sea, turquoise ocean waves, golden sand, bright sunlight, photorealistic, cinematic, detailed skin texture, 4k"
+   ],
+   "color": "#232",
+   "bgcolor": "#353"
+  },
+  {
+   "id": 6,
+   "type": "CLIPTextEncode",
+   "title": "Negative",
+   "pos": [
+    -760,
+    380
+   ],
+   "size": [
+    440,
+    110
+   ],
+   "flags": {},
+   "order": 7,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "clip",
+     "type": "CLIP",
+     "link": 2
+    }
+   ],
+   "outputs": [
+    {
+     "name": "CONDITIONING",
+     "type": "CONDITIONING",
+     "links": [
+      7
+     ]
+    }
+   ],
+   "properties": {},
+   "widgets_values": [
+    "worst quality, low quality, blurry, deformed, distorted, static, no motion, jpeg artifacts, watermark, extra limbs"
+   ],
+   "color": "#322",
+   "bgcolor": "#533"
+  },
+  {
+   "id": 7,
+   "type": "LoadImage",
+   "title": "5. Фото Розы",
+   "pos": [
+    -1180,
+    540
+   ],
+   "size": [
+    360,
+    340
+   ],
+   "flags": {},
+   "order": 11,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "IMAGE",
+     "type": "IMAGE",
+     "links": [
+      5,
+      10
+     ]
+    },
+    {
+     "name": "MASK",
+     "type": "MASK",
+     "links": []
+    }
+   ],
+   "properties": {},
+   "widgets_values": [
+    "WomanPortraitRed.png",
+    "image"
+   ],
+   "color": "#232",
+   "bgcolor": "#353"
+  },
+  {
+   "id": 8,
+   "type": "CLIPVisionLoader",
+   "title": "6. CLIP Vision",
+   "pos": [
+    -1180,
+    900
+   ],
+   "size": [
+    360,
+    70
+   ],
+   "flags": {},
+   "order": 13,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "CLIP_VISION",
+     "type": "CLIP_VISION",
+     "links": [
+      9
+     ]
+    }
+   ],
+   "properties": {},
+   "widgets_values": [
+    "clip_vision_h.safetensors"
+   ],
+   "color": "#233",
+   "bgcolor": "#355"
+  },
+  {
+   "id": 9,
+   "type": "CLIPVisionEncode",
+   "title": "CLIP Vision Encode",
+   "pos": [
+    -760,
+    900
+   ],
+   "size": [
+    360,
+    80
+   ],
+   "flags": {},
+   "order": 14,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "clip_vision",
+     "type": "CLIP_VISION",
+     "link": 9
+    },
+    {
+     "name": "image",
+     "type": "IMAGE",
+     "link": 10
+    }
+   ],
+   "outputs": [
+    {
+     "name": "CLIP_VISION_OUTPUT",
+     "type": "CLIP_VISION_OUTPUT",
+     "links": [
+      11
+     ]
+    }
+   ],
+   "properties": {},
+   "widgets_values": []
+  },
+  {
+   "id": 10,
+   "type": "WanImageToVideo",
+   "title": "7. Wan I2V",
+   "pos": [
+    -260,
+    300
+   ],
+   "size": [
+    340,
+    150
+   ],
+   "flags": {},
+   "order": 3,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "positive",
+     "type": "CONDITIONING",
+     "link": 6
+    },
+    {
+     "name": "negative",
+     "type": "CONDITIONING",
+     "link": 7
+    },
+    {
+     "name": "vae",
+     "type": "VAE",
+     "link": 8
+    },
+    {
+     "name": "width",
+     "type": "INT",
+     "link": null
+    },
+    {
+     "name": "height",
+     "type": "INT",
+     "link": null
+    },
+    {
+     "name": "length",
+     "type": "INT",
+     "link": null
+    },
+    {
+     "name": "batch_size",
+     "type": "INT",
+     "link": null
+    },
+    {
+     "name": "clip_vision_output",
+     "type": "CLIP_VISION_OUTPUT",
+     "link": 11
+    },
+    {
+     "name": "start_image",
+     "type": "IMAGE",
+     "link": 5
+    }
+   ],
+   "outputs": [
+    {
+     "name": "positive",
+     "type": "CONDITIONING",
+     "links": [
+      12
+     ]
+    },
+    {
+     "name": "negative",
+     "type": "CONDITIONING",
+     "links": [
+      13
+     ]
+    }
+   ],
+   "properties": {},
+   "widgets_values": [
+    720,
+    1280,
+    121,
+    1
+   ],
+   "color": "#223",
+   "bgcolor": "#335"
+  },
+  {
+   "id": 11,
+   "type": "ModelSamplingSD3",
+   "title": "ModelSampling SD3",
+   "pos": [
+    -260,
+    480
+   ],
+   "size": [
+    300,
+    80
+   ],
+   "flags": {},
+   "order": 10,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "model",
+     "type": "MODEL",
+     "link": 3
+    }
+   ],
+   "outputs": [
+    {
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      4
+     ]
+    }
+   ],
+   "properties": {},
+   "widgets_values": [
+    5.0
+   ],
+   "color": "#2a363b",
+   "bgcolor": "#3f5159"
+  },
+  {
+   "id": 12,
+   "type": "KSampler",
+   "title": "8. KSampler (30 steps)",
+   "pos": [
+    160,
+    300
+   ],
+   "size": [
+    320,
+    290
+   ],
+   "flags": {},
+   "order": 4,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "model",
+     "type": "MODEL",
+     "link": 4
+    },
+    {
+     "name": "positive",
+     "type": "CONDITIONING",
+     "link": 12
+    },
+    {
+     "name": "negative",
+     "type": "CONDITIONING",
+     "link": 13
+    },
+    {
+     "name": "latent_image",
+     "type": "LATENT",
+     "link": 14
+    }
+   ],
+   "outputs": [
+    {
+     "name": "LATENT",
+     "type": "LATENT",
+     "links": [
+      15
+     ]
+    }
+   ],
+   "properties": {},
+   "widgets_values": [
+    0,
+    30,
+    6.0,
+    "euler",
+    "simple",
+    1.0,
+    "randomize"
+   ]
+  },
+  {
+   "id": 13,
+   "type": "EmptySD3LatentImage",
+   "title": "Empty Latent (720×1280)",
+   "pos": [
+    160,
+    620
+   ],
+   "size": [
+    320,
+    110
+   ],
+   "flags": {},
+   "order": 12,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "LATENT",
+     "type": "LATENT",
+     "links": [
+      14
+     ]
+    }
+   ],
+   "properties": {},
+   "widgets_values": [
+    720,
+    1280,
+    0
+   ]
+  },
+  {
+   "id": 14,
+   "type": "VAEDecode",
+   "title": "9. VAE Decode",
+   "pos": [
+    540,
+    300
+   ],
+   "size": [
+    250,
+    70
+   ],
+   "flags": {},
+   "order": 5,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "samples",
+     "type": "LATENT",
+     "link": 15
+    },
+    {
+     "name": "vae",
+     "type": "VAE",
+     "link": 16
+    }
+   ],
+   "outputs": [
+    {
+     "name": "IMAGE",
+     "type": "IMAGE",
+     "links": [
+      17
+     ]
+    }
+   ],
+   "properties": {},
+   "widgets_values": []
+  },
+  {
+   "id": 15,
+   "type": "VHS_VideoCombine",
+   "title": "10. Save Video (Wan final)",
+   "pos": [
+    540,
+    410
+   ],
+   "size": [
+    340,
+    200
+   ],
+   "flags": {},
+   "order": 9,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "images",
+     "type": "IMAGE",
+     "link": 17
+    }
+   ],
+   "outputs": [
+    {
+     "name": "VHS_FILENAMES",
+     "type": "VHS_FILENAMES",
+     "links": []
+    }
+   ],
+   "properties": {},
+   "widgets_values": [
+    24,
+    0,
+    "Wan_final",
+    "video/h264-mp4",
+    false,
+    true
+   ]
+  }
+ ],
+ "links": [
+  [
+   1,
+   2,
+   0,
+   5,
+   0,
+   "CLIP"
+  ],
+  [
+   2,
+   2,
+   0,
+   6,
+   0,
+   "CLIP"
+  ],
+  [
+   3,
+   4,
+   0,
+   11,
+   0,
+   "MODEL"
+  ],
+  [
+   4,
+   11,
+   0,
+   12,
+   0,
+   "MODEL"
+  ],
+  [
+   5,
+   7,
+   0,
+   10,
+   8,
+   "IMAGE"
+  ],
+  [
+   6,
+   5,
+   0,
+   10,
+   0,
+   "CONDITIONING"
+  ],
+  [
+   7,
+   6,
+   0,
+   10,
+   1,
+   "CONDITIONING"
+  ],
+  [
+   8,
+   3,
+   0,
+   10,
+   2,
+   "VAE"
+  ],
+  [
+   9,
+   8,
+   0,
+   9,
+   0,
+   "CLIP_VISION"
+  ],
+  [
+   10,
+   7,
+   0,
+   9,
+   1,
+   "IMAGE"
+  ],
+  [
+   11,
+   9,
+   0,
+   10,
+   7,
+   "CLIP_VISION_OUTPUT"
+  ],
+  [
+   12,
+   10,
+   0,
+   12,
+   1,
+   "CONDITIONING"
+  ],
+  [
+   13,
+   10,
+   1,
+   12,
+   2,
+   "CONDITIONING"
+  ],
+  [
+   14,
+   13,
+   0,
+   12,
+   3,
+   "LATENT"
+  ],
+  [
+   15,
+   12,
+   0,
+   14,
+   0,
+   "LATENT"
+  ],
+  [
+   16,
+   3,
+   0,
+   14,
+   1,
+   "VAE"
+  ],
+  [
+   17,
+   14,
+   0,
+   15,
+   0,
+   "IMAGE"
+  ]
+ ],
+ "groups": [],
+ "config": {},
+ "extra": {
+  "ds": {
+   "scale": 0.85
+  },
+  "ue_links": {}
+ },
+ "version": "0.4",
+ "stages": []
+}

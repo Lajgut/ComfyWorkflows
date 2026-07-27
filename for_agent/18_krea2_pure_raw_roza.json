@@ -1,0 +1,543 @@
+{
+ "last_node_id": 21,
+ "last_link_id": 11,
+ "nodes": [
+  {
+   "id": 1,
+   "type": "UNETLoader",
+   "pos": [
+    -1200,
+    200
+   ],
+   "size": [
+    340,
+    82
+   ],
+   "flags": {},
+   "order": 2,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      1
+     ],
+     "slot_index": 0
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "UNETLoader"
+   },
+   "widgets_values": [
+    "krea2/krea2_raw_bf16.safetensors",
+    "default"
+   ],
+   "title": "Krea 2 Raw (bf16)",
+   "color": "#232",
+   "bgcolor": "#353"
+  },
+  {
+   "id": 2,
+   "type": "LoraLoaderModelOnly",
+   "pos": [
+    -760,
+    200
+   ],
+   "size": [
+    340,
+    106
+   ],
+   "flags": {},
+   "order": 3,
+   "mode": 4,
+   "inputs": [
+    {
+     "name": "model",
+     "type": "MODEL",
+     "link": 1
+    }
+   ],
+   "outputs": [
+    {
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      12
+     ],
+     "slot_index": 0
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "LoraLoaderModelOnly"
+   },
+   "widgets_values": [
+    "krea2/krea2_realism_lora.safetensors",
+    0.5
+   ],
+   "title": "Realism LoRA (кожа/текстуры)",
+   "color": "#323",
+   "bgcolor": "#535"
+  },
+  {
+   "id": 4,
+   "type": "CLIPLoader",
+   "pos": [
+    -1200,
+    340
+   ],
+   "size": [
+    340,
+    106
+   ],
+   "flags": {},
+   "order": 4,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "CLIP",
+     "type": "CLIP",
+     "links": [
+      3
+     ],
+     "slot_index": 0
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "CLIPLoader"
+   },
+   "widgets_values": [
+    "qwen3vl_4b_bf16.safetensors",
+    "krea2",
+    "default"
+   ],
+   "title": "Text encoder (type MUST be krea2)",
+   "color": "#232",
+   "bgcolor": "#353"
+  },
+  {
+   "id": 9,
+   "type": "VAELoader",
+   "pos": [
+    -1200,
+    460
+   ],
+   "size": [
+    340,
+    58
+   ],
+   "flags": {},
+   "order": 5,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "VAE",
+     "type": "VAE",
+     "links": [
+      10
+     ],
+     "slot_index": 0
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "VAELoader"
+   },
+   "widgets_values": [
+    "qwen_image_vae.safetensors"
+   ],
+   "title": "Qwen image VAE",
+   "color": "#232",
+   "bgcolor": "#353"
+  },
+  {
+   "id": 5,
+   "type": "CLIPTextEncode",
+   "pos": [
+    -300,
+    340
+   ],
+   "size": [
+    400,
+    200
+   ],
+   "flags": {},
+   "order": 6,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "clip",
+     "type": "CLIP",
+     "link": 3
+    }
+   ],
+   "outputs": [
+    {
+     "name": "CONDITIONING",
+     "type": "CONDITIONING",
+     "links": [
+      5,
+      6
+     ],
+     "slot_index": 0
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "CLIPTextEncode"
+   },
+   "widgets_values": [
+    "A young woman with long dark wavy hair on a sunny beach in a black swimsuit, photorealistic, cinematic lighting, detailed skin texture, 8k"
+   ],
+   "title": "Prompt (the ONLY steering at cfg 1)",
+   "color": "#223",
+   "bgcolor": "#335"
+  },
+  {
+   "id": 6,
+   "type": "ConditioningZeroOut",
+   "pos": [
+    -300,
+    500
+   ],
+   "size": [
+    400,
+    58
+   ],
+   "flags": {},
+   "order": 7,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "conditioning",
+     "type": "CONDITIONING",
+     "link": 6
+    }
+   ],
+   "outputs": [
+    {
+     "name": "CONDITIONING",
+     "type": "CONDITIONING",
+     "links": [
+      7
+     ],
+     "slot_index": 0
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "ConditioningZeroOut"
+   },
+   "widgets_values": [],
+   "title": "Negative = zeroed positive (do not edit)",
+   "color": "#223",
+   "bgcolor": "#335"
+  },
+  {
+   "id": 7,
+   "type": "EmptySD3LatentImage",
+   "pos": [
+    220,
+    340
+   ],
+   "size": [
+    400,
+    106
+   ],
+   "flags": {},
+   "order": 8,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "LATENT",
+     "type": "LATENT",
+     "links": [
+      8
+     ],
+     "slot_index": 0
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "EmptySD3LatentImage"
+   },
+   "widgets_values": [
+    832,
+    1216,
+    1
+   ],
+   "title": "Latent — batch_size stays 1 on Mac",
+   "color": "#432",
+   "bgcolor": "#653"
+  },
+  {
+   "id": 8,
+   "type": "KSampler",
+   "pos": [
+    220,
+    460
+   ],
+   "size": [
+    380,
+    262
+   ],
+   "flags": {},
+   "order": 9,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "model",
+     "type": "MODEL",
+     "link": 13
+    },
+    {
+     "name": "positive",
+     "type": "CONDITIONING",
+     "link": 5
+    },
+    {
+     "name": "negative",
+     "type": "CONDITIONING",
+     "link": 7
+    },
+    {
+     "name": "latent_image",
+     "type": "LATENT",
+     "link": 8
+    }
+   ],
+   "outputs": [
+    {
+     "name": "LATENT",
+     "type": "LATENT",
+     "links": [
+      9
+     ],
+     "slot_index": 0
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "KSampler"
+   },
+   "widgets_values": [
+    0,
+    25,
+    4.0,
+    "euler",
+    "simple",
+    1.0,
+    "randomize"
+   ],
+   "title": "KSampler (25 steps · cfg 4.0)",
+   "color": "#432",
+   "bgcolor": "#653"
+  },
+  {
+   "id": 10,
+   "type": "VAEDecode",
+   "pos": [
+    620,
+    460
+   ],
+   "size": [
+    380,
+    50
+   ],
+   "flags": {},
+   "order": 10,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "samples",
+     "type": "LATENT",
+     "link": 9
+    },
+    {
+     "name": "vae",
+     "type": "VAE",
+     "link": 10
+    }
+   ],
+   "outputs": [
+    {
+     "name": "IMAGE",
+     "type": "IMAGE",
+     "links": [
+      11
+     ],
+     "slot_index": 0
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "VAEDecode"
+   },
+   "widgets_values": [],
+   "color": "#222",
+   "bgcolor": "#000"
+  },
+  {
+   "id": 11,
+   "type": "SaveImage",
+   "pos": [
+    620,
+    580
+   ],
+   "size": [
+    380,
+    300
+   ],
+   "flags": {},
+   "order": 11,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "images",
+     "type": "IMAGE",
+     "link": 11
+    }
+   ],
+   "outputs": [],
+   "properties": {
+    "Node name for S&R": "SaveImage"
+   },
+   "widgets_values": [
+    "Krea2_PureRaw_Rozy"
+   ],
+   "color": "#222",
+   "bgcolor": "#000"
+  },
+  {
+   "id": 12,
+   "type": "LoraLoaderModelOnly",
+   "title": "★ LoRA Розы (обученная)",
+   "pos": [
+    -300,
+    200
+   ],
+   "size": [
+    420,
+    110
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "model",
+     "type": "MODEL",
+     "link": 12
+    }
+   ],
+   "outputs": [
+    {
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      13
+     ]
+    }
+   ],
+   "properties": {},
+   "widgets_values": [
+    "None",
+    0.8
+   ],
+   "color": "#323",
+   "bgcolor": "#535"
+  }
+ ],
+ "links": [
+  [
+   1,
+   1,
+   0,
+   2,
+   0,
+   "MODEL"
+  ],
+  [
+   3,
+   4,
+   0,
+   5,
+   0,
+   "CLIP"
+  ],
+  [
+   5,
+   5,
+   0,
+   8,
+   1,
+   "CONDITIONING"
+  ],
+  [
+   6,
+   5,
+   0,
+   6,
+   0,
+   "CONDITIONING"
+  ],
+  [
+   7,
+   6,
+   0,
+   8,
+   2,
+   "CONDITIONING"
+  ],
+  [
+   8,
+   7,
+   0,
+   8,
+   3,
+   "LATENT"
+  ],
+  [
+   9,
+   8,
+   0,
+   10,
+   0,
+   "LATENT"
+  ],
+  [
+   10,
+   9,
+   0,
+   10,
+   1,
+   "VAE"
+  ],
+  [
+   11,
+   10,
+   0,
+   11,
+   0,
+   "IMAGE"
+  ],
+  [
+   12,
+   2,
+   0,
+   12,
+   0,
+   "MODEL"
+  ],
+  [
+   13,
+   12,
+   0,
+   8,
+   0,
+   "MODEL"
+  ]
+ ],
+ "groups": [],
+ "config": {},
+ "extra": {},
+ "version": 0.4
+}
